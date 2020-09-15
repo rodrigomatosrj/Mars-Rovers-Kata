@@ -5,6 +5,27 @@
             y: 0,
             travelLog: [[0,0]]
         }
+
+
+    let obstacles = [[1,1],[0,9],[0,1],[1,2]];
+
+
+
+    function canGoAhead(coordX,coordY,obstacles){
+        if(coordX > 10 || coordX < 0 || coordY > 10 || coordY < 0){ //limite do GRID
+                return false;
+        }else{  
+            for(let i=0;i<obstacles.length;i++){
+                if(coordX === obstacles[i][0] && coordY === obstacles[i][1]){
+                    //colision
+                    return false;
+                    break;
+                }
+            }
+            return true;
+        }
+    }
+
 // ======================
         function turnLeft(rover) {
             switch(rover.direction){
@@ -45,34 +66,34 @@
         function moveForward(rover) {
             switch(rover.direction){
                 case("N"):
-                    if(rover.x !== 0){
-                        rover.x--;
-                    }else{
-                        console.log(`Impossible going on ${rover.direction} direction at this moment!`);
+                    rover.x--;
+                    if(!canGoAhead(rover.x,rover.y,obstacles)){
+                        rover++;                        
+                        console.log(`Impossible going on ${rover.direction} direction at this moment! There is an obstacle ahead or we are at the border of the grid!`);
                         return;
                     }
                     break;
                 case("E"):
-                    if(rover.y !== 10){
-                        rover.y++;
-                    }else{
-                        console.log(`Impossible going on ${rover.direction} direction at this moment!`);
+                    rover.y++;
+                    if(!canGoAhead(rover.x,rover.y,obstacles)){
+                        rover.y--;
+                        console.log(`Impossible going on ${rover.direction} direction at this moment! There is an obstacle ahead or we are at the border of the grid!`);
                         return;
                     }
                     break;
                 case("S"):
-                    if(rover.x !== 10){
-                        rover.x++;
-                    }else{
-                        console.log(`Impossible going on ${rover.direction} direction at this moment!`);
+                    rover.x++;
+                    if(!canGoAhead(rover.x,rover.y,obstacles)){
+                        rover--;
+                        console.log(`Impossible going on ${rover.direction} direction at this moment! There is an obstacle ahead or we are at the border of the grid!`);
                         return;
                     }
                     break;
                 case("W"):
-                    if(rover.y !== 0){
-                        rover.y--;
-                    }else{
-                        console.log(`Impossible going on ${rover.direction} direction at this moment!`);
+                    rover.y--;
+                    if(!canGoAhead(rover.x,rover.y,obstacles)){
+                        rover.y++;
+                        console.log(`Impossible going on ${rover.direction} direction at this moment! There is an obstacle ahead or we are at the border of the grid!`);
                         return;
                     }
                     break;    
@@ -151,3 +172,5 @@
        console.log(typeof(Rover));
        command(rover,"rffffllbbffffllffsssdabbrfffllbbb");
        console.log(rover.travelLog);
+
+   canGoAhead(0,1,obstacles);
